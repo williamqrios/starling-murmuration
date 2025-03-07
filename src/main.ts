@@ -68,33 +68,6 @@ numBoidsSlider.addEventListener("input", () => {
   boids = initializeBoids(numBoids);
 });
 
-
-const checkCollisions = () => {
-  for (let i = 0; i < boids.length; i++) {
-    for (let j = i + 1; j < boids.length; j++) {
-      const dx = boids[j].x - boids[i].x;
-      const dy = boids[j].y - boids[i].y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      if (distance < RADIUS * 2) {
-        // Elastic collision (swap velocity vectors) 
-        const tempVx = boids[i].vx;
-        const tempVy = boids[i].vy;
-        boids[i].vx = boids[j].vx;
-        boids[j].vx = tempVx;
-        boids[i].vy = boids[j].vy;
-        boids[j].vy = tempVy;
-        // Overlap correction (only visible for large particles) 
-        const overlap = (RADIUS * 2 - distance) / 2;
-        const angle = Math.atan2(dy, dx); // Angle between two particles
-        boids[i].x -= overlap * Math.cos(angle);
-        boids[i].y -= overlap * Math.sin(angle);
-        boids[j].x += overlap * Math.cos(angle);
-        boids[j].y += overlap * Math.sin(angle);
-      }
-    }
-  }
-}
-
 let SEPARATION_RADIUS = 75; 
 let SEPARATION_STRENGTH = 0.1; 
 function applySeparation(boid: Boid, boids: Array<Boid>) {
